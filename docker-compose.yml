@@ -1,0 +1,35 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_DRIVER: postgres
+      DATABASE_URL: postgres://letterbox:letterbox@db:5432/letterbox
+      DB_SYNCHRONIZE: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: letterbox
+      POSTGRES_PASSWORD: letterbox
+      POSTGRES_DB: letterbox
+    # Published off the default port so a Postgres already installed on the host
+    # does not answer in this one's place.
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U letterbox -d letterbox"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
