@@ -1,0 +1,81 @@
+### Catalogar um jogo
+POST http://localhost:3000/games
+Content-Type: application/json
+
+{
+  "title": "Hollow Knight",
+  "genre": "Metroidvania",
+  "platform": "PC",
+  "releaseDate": "2017-02-24",
+  "description": "Reino de insetos em ruinas.",
+  "hoursToBeat": 40
+}
+
+> {% client.global.set("gameId", response.body.id); %}
+
+### Duracao negativa: barrada na borda, responde 400
+POST http://localhost:3000/games
+Content-Type: application/json
+
+{
+  "title": "Jogo impossivel",
+  "genre": "Metroidvania",
+  "platform": "PC",
+  "releaseDate": "2020-01-01",
+  "description": "x",
+  "hoursToBeat": -5
+}
+
+### O que jogar agora: ranqueia o backlog e diz por que
+GET http://localhost:3000/games/backlog
+
+### So as tres primeiras sugestoes
+GET http://localhost:3000/games/backlog?limit=3
+
+### Limite invalido: responde 400
+GET http://localhost:3000/games/backlog?limit=0
+
+### Listar tudo
+GET http://localhost:3000/games
+
+### Filtrar por plataforma
+GET http://localhost:3000/games?platform=PC
+
+### Filtrar por plataforma e status ao mesmo tempo
+GET http://localhost:3000/games?platform=PC&status=backlog
+
+### Buscar por id
+GET http://localhost:3000/games/{{gameId}}
+
+### Avaliar
+PATCH http://localhost:3000/games/{{gameId}}/rating
+Content-Type: application/json
+
+{ "rating": 9.5 }
+
+### Marcar como zerado
+PATCH http://localhost:3000/games/{{gameId}}/status
+Content-Type: application/json
+
+{ "status": "completed" }
+
+### Nota fora da faixa: a regra e do dominio, responde 422
+PATCH http://localhost:3000/games/{{gameId}}/rating
+Content-Type: application/json
+
+{ "rating": 42 }
+
+### Payload invalido: barrado na borda, responde 400
+POST http://localhost:3000/games
+Content-Type: application/json
+
+{
+  "title": "",
+  "genre": "Metroidvania"
+}
+
+### Id que nao existe: responde 404
+GET http://localhost:3000/games/00000000-0000-0000-0000-000000000000
+
+### Remover
+DELETE http://localhost:3000/games/{{gameId}}
