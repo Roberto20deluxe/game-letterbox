@@ -33,8 +33,9 @@ export class PersistenceModule {
           type: 'postgres',
           url: process.env.DATABASE_URL,
           entities: [GameSchema],
-          // Render provisions Postgres behind TLS with a certificate the container
-          // does not carry a root for, so verification has to be relaxed there.
+          // Managed Postgres is usually served behind TLS with a certificate the
+          // container carries no root for, so verification has to be relaxed
+          // where DATABASE_SSL says so. Locally it stays off.
           ssl: process.env.DATABASE_SSL === 'true' && {
             rejectUnauthorized: false,
           },
