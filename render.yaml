@@ -1,0 +1,24 @@
+databases:
+  - name: game-letterbox-db
+    databaseName: letterbox
+    user: letterbox
+    plan: free
+
+services:
+  - type: web
+    name: game-letterbox
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /games
+    envVars:
+      - key: DB_DRIVER
+        value: postgres
+      - key: DATABASE_URL
+        fromDatabase:
+          name: game-letterbox-db
+          property: connectionString
+      - key: DATABASE_SSL
+        value: "true"
+      - key: DB_SYNCHRONIZE
+        value: "true"
