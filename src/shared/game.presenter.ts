@@ -1,16 +1,34 @@
 import { Game, GameStatus } from './game';
 
-export interface GameResponse {
+// A class rather than an interface so the OpenAPI document can describe it: the
+// Swagger plugin reads types and doc comments off classes, and interfaces are
+// gone by the time it looks.
+export class GameResponse {
   id: string;
+
+  /** @example "Hollow Knight" */
   title: string;
+
+  /** @example "Metroidvania" */
   genre: string;
+
+  /** @example "PC" */
   platform: string;
+
   releaseDate: string;
+
   description: string;
+
+  /** De 0 a 10. Zero significa que ainda não avaliei. */
   rating: number;
+
+  /** Horas para zerar. Nulo quando não pesquisei. */
   hoursToBeat: number | null;
+
   status: GameStatus;
+
   createdAt: string;
+
   updatedAt: string;
 }
 

@@ -173,6 +173,9 @@ transformar `shared/` em depósito.
 
 Status possíveis: `backlog`, `playing`, `completed`, `dropped`.
 
+A especificação OpenAPI completa, com os corpos de requisição e todos os códigos de
+resposta, está em `/docs` com a aplicação rodando.
+
 Exemplo:
 
 ```bash
@@ -197,7 +200,12 @@ docker compose up
 O compose publica o banco em `5433` no host, para não disputar a porta com um Postgres
 já instalado na máquina. Dentro da rede do compose a API fala com ele em `db:5432`.
 
-Há um [`api.http`](api.http) com as chamadas prontas, incluindo os casos de erro.
+Com a aplicação de pé, a documentação navegável fica em
+**http://localhost:3000/docs**. É OpenAPI gerado do próprio código: lista os endpoints,
+o que cada um aceita e devolve, e dispara as chamadas ali mesmo pelo botão *Try it out*.
+
+Há também um [`api.http`](api.http) com as chamadas prontas para o HTTP Client do
+WebStorm ou do VS Code, incluindo os casos de erro.
 
 ## Testes
 
